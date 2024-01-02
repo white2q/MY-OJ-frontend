@@ -1,11 +1,10 @@
 import { RouteRecordRaw } from "vue-router";
-import HomeView from "@/views/HomeView.vue";
-import AdminView from "@/views/AdminView.vue";
-import ACCESS_ENUM from "@/access/accessEnum";
 import NoAuthView from "@/views/auth/NoAuthView.vue";
 import LoginView from "@/views/user/LoginView.vue";
 import RegisterView from "@/views/user/RegisterView.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
+import QuestionAddView from "@/views/question/QuestionAddView.vue";
+import ACCESS_ENUM from "@/access/accessEnum";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -29,9 +28,10 @@ export const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: "/",
-    name: "home",
-    component: HomeView,
+    path: "/add/question",
+    name: "创建题目",
+    component: QuestionAddView,
+    meta: {},
   },
   {
     path: "/noAuth",
@@ -41,19 +41,20 @@ export const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
     },
   },
-  {
-    path: "/admin",
-    name: "admin",
-    component: AdminView,
-    meta: {
-      access: ACCESS_ENUM.ADMIN,
-      // hideInMenu: true,
-    },
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
+
+  // {
+  //   path: "/admin",
+  //   name: "admin",
+  //   component: AdminView,
+  //   meta: {
+  //     access: ACCESS_ENUM.ADMIN,
+  //     // hideInMenu: true,
+  //   },
+  // },
+  // {
+  //   path: "/about",
+  //   name: "about",
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  // },
 ];

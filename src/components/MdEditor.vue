@@ -1,21 +1,34 @@
 <template>
-  <Editor :value="value" :plugins="plugins" @change="handleChange" />
+  <Editor
+    :mode="mode"
+    :value="value"
+    :plugins="plugins"
+    @change="handleChange"
+  />
 </template>
 
 <script setup lang="ts">
 import gfm from "@bytemd/plugin-gfm";
 import { Editor } from "@bytemd/vue-next";
-import { ref } from "vue";
+import { defineProps, withDefaults } from "vue";
 import highlight from "@bytemd/plugin-highlight";
 import math from "@bytemd/plugin-math";
 
 const plugins = [gfm(), highlight(), math()];
 
-const value = ref();
+interface Props {
+  value: string;
+  mode: string;
+  handleChange: (v: string) => void;
+}
 
-const handleChange = (v: string) => {
-  value.value = v;
-};
+const props = withDefaults(defineProps<Props>(), {
+  value: () => "",
+  mode: () => "split",
+  handleChange: (v: string) => {
+    console.log(v);
+  },
+});
 </script>
 
 <style>

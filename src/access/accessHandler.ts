@@ -7,19 +7,12 @@ const accessHandler = (loginUser: any, needAccess = ACCESS_ENUM.NOT_LOGIN) => {
   }
 
   if (needAccess === ACCESS_ENUM.LOGIN_USER) {
-    if (loginUser.isLogin) {
-      return true;
-    }
-    return false;
+    return loginUser.isLogin ? true : false;
   }
 
   if (needAccess === ACCESS_ENUM.ADMIN) {
-    if (loginUser.userRole === ACCESS_ENUM.ADMIN) {
-      return true;
-    }
-    return false;
+    return loginUser.userRole === ACCESS_ENUM.ADMIN ? true : false;
   }
-
   return false;
 };
 export default accessHandler;

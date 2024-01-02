@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="exampleView">
     <MdEditor></MdEditor>
     <CodeEditor :value="codeValue" :handle-change="onCodeChange"></CodeEditor>
   </div>

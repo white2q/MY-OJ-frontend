@@ -28,7 +28,7 @@ export default defineComponent({
 }
 
 #basicLayout .content {
-  background-color: gray;
+  background-color: white;
   margin-bottom: 16px;
 }
 
