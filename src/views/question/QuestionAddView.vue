@@ -84,11 +84,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
 import { QuestionControllerService } from "../../../generated";
+import message from "@arco-design/web-vue/es/message";
+import { useRoute } from "vue-router";
 
-const form = reactive({
+const form = ref({
   title: "",
   answer: "",
   content: "",
@@ -105,27 +107,93 @@ const form = reactive({
   ],
 });
 
+const route = useRoute();
+
+const loadData = async () => {
+  const id = route.query.id;
+  if (!id) {
+    return;
+  }
+
+  const res = await QuestionControllerService.getQuestionByIdUsingGet(
+    id as any
+  );
+
+  if (res.code === 0) {
+    console.log(res.data);
+    form.value = res.data as any;
+
+    if (!form.value.tags) {
+      form.value.tags = [];
+    } else {
+      form.value.tags = JSON.parse(form.value.tags as any);
+    }
+
+    if (!form.value.judgeCase) {
+      form.value.judgeCase = [
+        {
+          input: "",
+          output: "",
+        },
+      ];
+    } else {
+      form.value.judgeCase = JSON.parse(form.value.judgeCase as any);
+    }
+
+    if (!form.value.judgeConfig) {
+      form.value.judgeCase = {
+        memoryLimit: 0,
+        timeLimit: 0,
+      };
+    } else {
+      form.value.judgeConfig = JSON.parse(form.value.judgeConfig as any);
+    }
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
 const onContentChange = (v: string) => {
-  form.content = v;
+  form.value.content = v;
 };
 
 const onAnswerChange = (v: string) => {
-  form.answer = v;
+  form.value.answer = v;
 };
 
 const handleAdd = () => {
-  form.judgeCase.push({
+  form.value.judgeCase.push({
     input: "",
     output: "",
   });
 };
 const handleDelete = (index: number) => {
-  form.judgeCase.splice(index, 1);
+  form.value.judgeCase.splice(index, 1);
 };
 const handleSubmit = async (data: any) => {
-  console.log(data);
-  const res = await QuestionControllerService.addQuestionUsingPost(form);
-  console.log(res.data);
+  console.log(form.value);
+  const id = route.query.id;
+  if (!id) {
+    const res = await QuestionControllerService.addQuestionUsingPost(
+      form.value
+    );
+    if (res.code === 0) {
+      message.success("添加成功");
+    } else {
+      message.error("添加失败", res.message);
+    }
+  } else {
+    const res = await QuestionControllerService.updateQuestionUsingPost({
+      ...form.value,
+    });
+    if (res.code === 0) {
+      message.success("修改成功");
+    } else {
+      message.error("修改失败", res.message);
+    }
+  }
 };
 </script>
 
