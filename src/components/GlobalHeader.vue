@@ -26,10 +26,7 @@
       </a-col>
       <a-col flex="100px">
         <a-dropdown
-          v-if="
-            store.state['user']?.loginUser?.userRole &&
-            store.state['user']?.loginUser?.userRole !== ACCESS_ENUM.NOT_LOGIN
-          "
+          v-if="store.state.user?.loginUser?.isLogin"
           @select="handleSelect"
         >
           <a-button type="text">{{ userName }}</a-button>
@@ -39,7 +36,7 @@
             <a-doption :value="{ value: 'logout' }">退出登录</a-doption>
           </template>
         </a-dropdown>
-        <a-button v-else @click="toLoginView" type="text">登录</a-button>
+        <a-button @click="toLoginView" v-else type="text">登录</a-button>
       </a-col>
     </a-row>
   </div>
@@ -52,11 +49,8 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import accessHandler from "@/access/accessHandler";
 import { UserControllerService } from "../../generated";
-import ACCESS_ENUM from "@/access/accessEnum";
 
 const store = useStore();
-
-console.log(store.state["user"]?.loginUser?.userRole);
 
 const userName = computed(() => {
   return store.state.user?.loginUser?.userName;
@@ -88,12 +82,14 @@ const handleSelect = async (v: any) => {
     await UserControllerService.userLogoutUsingPost();
     // 更新用户登录状态
     await store.dispatch("user/getLoginUser", {});
-    await router.push({
+    console.log(store.state.user.loginUser);
+    router.push({
       path: "/",
     });
+    console.log(userName);
     return;
   } else {
-    console.log("TODO");
+    alert(1);
   }
 };
 

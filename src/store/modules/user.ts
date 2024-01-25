@@ -10,10 +10,10 @@ export default {
   getters: {},
   // 异步
   actions: {
-    async getLoginUser({ commit, state }) {
+    async getLoginUser({ commit, state }, data) {
       const res = await UserControllerService.getLoginUserUsingGet();
       if (res.code === 0) {
-        commit("updateUser", res.data);
+        commit("updateUser", { ...res.data, isLogin: true });
       } else {
         commit("updateUser", { userRole: ACCESS_ENUM.NOT_LOGIN });
       }
