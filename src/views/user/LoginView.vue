@@ -45,11 +45,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { reactive } from "vue";
 import { UserControllerService } from "../../../generated";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import message from "@arco-design/web-vue/es/message";
 
 const router = useRouter();
+const store = useStore();
 
 const form = reactive({
   userAccount: "",
@@ -59,14 +62,14 @@ const form = reactive({
 const handleSubmit = async () => {
   const res = await UserControllerService.userLoginUsingPost(form);
   if (res.code === 0) {
-    await UserControllerService.getLoginUserUsingGet();
+    await store.dispatch("user/getLoginUser");
     router.push({
       path: "/",
       replace: true,
     });
     return;
   } else {
-    alert(1);
+    message.error("登录失败" + res.message);
   }
 };
 </script>

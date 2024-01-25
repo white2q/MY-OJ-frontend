@@ -1,5 +1,13 @@
 <template>
   <div id="questionView">
+    <a-space style="margin-left: 25%" direction="vertical" size="large">
+      <a-input-search
+        @change="doSearch"
+        :style="{ width: '35vw' }"
+        placeholder="输入标题、标签进行搜索"
+      />
+    </a-space>
+    <ADivider size="1"></ADivider>
     <a-table
       :pagination="{
         total,
@@ -11,6 +19,11 @@
       :data="data"
       @page-change="onPageChange"
     >
+      <template #title="{ record }">
+        <a-space wrap>
+          <a-link @click="doQuestion(record.id)">{{ record.title }}</a-link>
+        </a-space>
+      </template>
       <template #id="{ record }">
         <a-space wrap>
           {{ data.indexOf(record) + 1 }}
@@ -49,7 +62,7 @@ const columns = [
   },
   {
     title: "标题",
-    dataIndex: "title",
+    slotName: "title",
   },
   {
     title: "通过率",
@@ -68,6 +81,7 @@ const router = useRouter();
 const searchParams = ref({
   pageSize: 10,
   current: 1,
+  title: "",
 });
 
 const loadData = async () => {
@@ -96,11 +110,34 @@ watchEffect(() => {
 onMounted(() => {
   loadData();
 });
+
+const doSearch = async (e: string) => {
+  searchParams.value = {
+    ...searchParams.value,
+    current: 1,
+    title: e,
+  };
+  const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
+    searchParams.value
+  );
+  if (res.code === 0) {
+    data.value = res.data.records;
+    total.value = res.data.total;
+  } else {
+    message.error("搜索失败" + res.message);
+  }
+};
+
+const doQuestion = (id: number) => {
+  router.push({
+    path: `/question/content/${id}`,
+  });
+};
 </script>
 
 <style scoped>
 #questionView {
   margin: 0 auto;
-  width: 90vw;
+  width: 80vw;
 }
 </style>
