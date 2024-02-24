@@ -6,6 +6,8 @@ import UserLayout from "@/layouts/UserLayout.vue";
 import QuestionAddView from "@/views/question/QuestionAddView.vue";
 import QuestionManageView from "@/views/question/QuestionManageView.vue";
 import QuestionsView from "@/views/question/QuestionsView.vue";
+import ACCESS_ENUM from "@/access/accessEnum";
+import QuestionContentView from "@/views/question/QuestionContentView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -45,7 +47,9 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/add/question",
     name: "创建题目",
     component: QuestionAddView,
-    meta: {},
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
   },
   {
     path: "/update/question",
@@ -59,7 +63,17 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/manage/question",
     name: "管理题目",
     component: QuestionManageView,
-    meta: {},
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/question/content/:id",
+    component: QuestionContentView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+    },
   },
   {
     path: "/noAuth",

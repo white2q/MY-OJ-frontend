@@ -19,6 +19,9 @@ export type OpenAPIConfig = {
   ENCODE_PATH?: ((path: string) => string) | undefined;
 };
 
+// 更新指令
+// openapi --input http://localhost:8121/api/v2/api-docs --output ./generated --client axios
+// https://github.com/ferdikoomen/openapi-typescript-codegen
 export const OpenAPI: OpenAPIConfig = {
   BASE: "http://localhost:8121",
   VERSION: "1.0",
