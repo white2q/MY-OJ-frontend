@@ -21,7 +21,7 @@ interface Props {
 // 设置默认值
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
-  language: () => "",
+  language: () => "java",
   handleChange: (v: string) => {
     console.log(v);
   },
@@ -31,7 +31,7 @@ const codeEditorRef = ref();
 const codeEditor = ref();
 
 watch(
-  () => languages,
+  () => props.language,
   () => {
     if (codeEditor.value) {
       monaco.editor.setModelLanguage(

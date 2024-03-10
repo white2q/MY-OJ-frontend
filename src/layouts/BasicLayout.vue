@@ -7,9 +7,9 @@
       <a-layout-content class="content">
         <router-view />
       </a-layout-content>
-      <a-layout-footer class="footer">
-        <a href="https://github.com/white2q" target="_blank"> ppf 's github </a>
-      </a-layout-footer>
+      <!--      <a-layout-footer class="footer">-->
+      <!--        <a href="https://github.com/white2q" target="_blank"> ppf 's github </a>-->
+      <!--      </a-layout-footer>-->
     </a-layout>
   </div>
 </template>

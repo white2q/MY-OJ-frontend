@@ -20,7 +20,7 @@
         <a-input
           id="inp"
           v-model.trim="form.userAccount"
-          placeholder="请输入账号"
+          placeholder="请输入账号(测试账号:test)"
         />
       </a-form-item>
       <a-form-item
@@ -34,24 +34,35 @@
       >
         <a-input-password
           v-model="form.userPassword"
-          placeholder="请输入密码"
+          placeholder="请输入密码(测试密码：12345678)"
         />
       </a-form-item>
-      <a-button class="btn-login" type="primary" html-type="submit"
-        >登录
-      </a-button>
+
+      <a-row class="grid-demo" style="margin-bottom: 16px">
+        <a-col flex="auto">
+          <a-button class="btn-login" type="primary" html-type="submit"
+            >登录
+          </a-button>
+        </a-col>
+        <a-col flex="auto">
+          <a-button @click="handleRegister" class="btn-login" type="primary"
+            >注册
+          </a-button>
+        </a-col>
+      </a-row>
     </a-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import { UserControllerService } from "../../../generated";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import message from "@arco-design/web-vue/es/message";
 
 const router = useRouter();
+const route = useRoute();
 const store = useStore();
 
 const form = reactive({
@@ -59,12 +70,26 @@ const form = reactive({
   userPassword: "",
 });
 
+const handleRegister = async () => {
+  await router.push({
+    path: "/user/register",
+  });
+};
+
+onMounted(() => {
+  const user = store.state.loginUser;
+  if (user != null) {
+    form.userAccount = user.userAccount;
+    form.userPassword = user.userPassword;
+  }
+});
+
 const handleSubmit = async () => {
   const res = await UserControllerService.userLoginUsingPost(form);
   if (res.code === 0) {
     await store.dispatch("user/getLoginUser");
-    router.push({
-      path: "/",
+    await router.push({
+      path: (route.query.redirect as string) || "/",
       replace: true,
     });
     return;

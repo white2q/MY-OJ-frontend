@@ -23,6 +23,7 @@ export type OpenAPIConfig = {
 // openapi --input http://localhost:8121/api/v2/api-docs --output ./generated --client axios
 // https://github.com/ferdikoomen/openapi-typescript-codegen
 export const OpenAPI: OpenAPIConfig = {
+  // BASE: "http://47.108.114.160:8121",
   BASE: "http://localhost:8121",
   VERSION: "1.0",
   WITH_CREDENTIALS: true,

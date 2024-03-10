@@ -53,6 +53,7 @@ import { useStore } from "vuex";
 import accessHandler from "@/access/accessHandler";
 import { UserControllerService } from "../../generated";
 import ACCESS_ENUM from "@/access/accessEnum";
+import message from "@arco-design/web-vue/es/message";
 
 const store = useStore();
 
@@ -88,6 +89,7 @@ const handleSelect = async (v: any) => {
     await UserControllerService.userLogoutUsingPost();
     // 更新用户登录状态
     await store.dispatch("user/getLoginUser", {});
+    message.success("退出成功!");
     await router.push({
       path: "/",
     });
