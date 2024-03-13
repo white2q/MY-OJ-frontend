@@ -41,7 +41,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/questions",
-    name: "浏览页面",
+    name: "题目列表",
     component: QuestionsView,
   },
   {
